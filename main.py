@@ -1,3 +1,3 @@
 import engine
 
-eng = engine.Engine(21, 4, 3, 3)
+eng = engine.Engine(21, up_to=True)
