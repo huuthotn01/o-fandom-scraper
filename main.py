@@ -1,3 +1,4 @@
 import engine
 
-eng = engine.Engine(21, up_to=True)
+for i in (21, 22):
+    eng = engine.Engine(year=i, up_to=True)
