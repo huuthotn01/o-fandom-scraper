@@ -99,7 +99,7 @@ class Engine():
             if done: break
         # target URL
         is_final = False
-        self.__url = "https://duong-len-dinh-olympia.fandom.com/vi/wiki/Năm_thứ_" + str(self.__year) + "/"
+        self.__url = "https://duong-len-dinh-olympia.fandom.com/vi/wiki/Olympia_" + str(self.__year) + "/"
         if self.__quarter == 0: 
             self.__url += "Chung_kết"
             is_final = True
@@ -110,26 +110,33 @@ class Engine():
         #
         page = requests.get(self.__url)
         page_html = bs4.BeautifulSoup(page.content, 'lxml')
-        content = page_html.find_all('table', class_='wikitable')
-        if len(content) == 4:
+        content = page_html.find_all('table', class_='sectiontable')
+        if len(content) == 0:
             print("Match " + target_dir + " not shown yet!")
             return
-        content_index = 0
+        
+        # need modifying for final match:
+        if is_final:
+            content = content[1:4] + content[5:] # remove livespots and quests for livespots
+        
         try: os.mkdir('media')
         except FileExistsError:
             pass
+
         engine_21 = o21.Engine_21()
         engine_22 = o22.Engine_22()
+
+        content_index = 1 # round number: 1 - KĐ, 2 - VCNV, 3 - TT, 4 - VĐ, 5 - CHP
         for cont in content:
-            if content_index == 1 + is_final:
+            if content_index == 1:
                 engine_21.KhoiDong(cont) if self.__year == 21 else engine_22.KhoiDong(cont)
-            elif content_index == 2 + is_final:
+            elif content_index == 2:
                 engine_21.VCNV(cont) if self.__year == 21 else engine_22.VCNV(cont)
-            elif content_index == 3 + is_final:
+            elif content_index == 3:
                 engine_21.TangToc(cont, self.__year) if self.__year == 21 else engine_22.TangToc(cont, self.__year)
-            elif content_index == 4 + is_final:
+            elif content_index == 4:
                 engine_21.VeDich(cont) if self.__year == 21 else engine_22.VeDich(cont)
-            elif content_index == 5 + is_final:
+            elif content_index == 5:
                 engine_21.CauHoiPhu(cont) if self.__year == 21 else engine_22.CauHoiPhu(cont)
             content_index += 1
         print(target_dir + " Done")

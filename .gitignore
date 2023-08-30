@@ -1,4 +1,10 @@
 /__pycache__
 /O*
 /test.py
+/test_2.py
+/substr.py
+*.ogv
+*.wav
+*.exe
+*.cpp
 /resize.py

@@ -1,4 +1,3 @@
 import engine
 
-for i in (21, 22):
-    eng = engine.Engine(year=i, up_to=True)
+eng = engine.Engine(year=23, quarter=0, month=0, week=0,up_to=True)
